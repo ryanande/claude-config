@@ -1,0 +1,35 @@
+# State-of-Ryan — daily personal triage
+#
+# Surfaces YOUR active efforts (worktrees, authored PRs, assigned tickets)
+# ranked by what's waiting on you vs. waiting on others. Companion to the
+# org-wide pr-intelligence digest — that one filters the org through the
+# architectural lens; this one filters YOUR plate through a WIP-management
+# lens.
+
+org: PrePass
+github_login: Ryan-Anderson_prepass
+jira_assignee_jql: "currentUser()"
+
+# Where to walk for active worktrees. The glob expands at request time.
+# Keep this list small — these are the repos where you actually run worktrees.
+worktree_globs:
+  - "/Users/ryan.anderson/projects/pp/dx-prepass-meta/repos/*/.claude/worktrees/*"
+
+# Aging thresholds, in days since last activity (commit, PR comment, ticket
+# comment — whichever is most recent).
+active_max_days: 3      # 0–3d ago = ACTIVE (advance today)
+parked_max_days: 7      # 4–7d ago = PARKED (handoff or resume)
+                        # 8d+      = ZOMBIE (kill or revive)
+
+# Branch name → ticket extraction. e.g. `feat/AT-283-foo` → AT-283.
+ticket_pattern: "(AT-[0-9]+)"
+
+# Caps per section (forces prioritization).
+max_active: 5
+max_parked: 5
+max_zombies: 10
+max_awaiting: 10
+
+# Soft target for total simultaneous active efforts. The digest flags when
+# you're over this.
+wip_cap: 3

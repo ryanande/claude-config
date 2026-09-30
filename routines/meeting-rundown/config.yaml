@@ -1,0 +1,29 @@
+# Meeting Rundown — scope and exclusions
+# Edit this file to control what the routine summarizes.
+
+# Meeting categories / tags to include.
+# These map to whatever taxonomy you use in Teams (channel, calendar category, etc).
+categories:
+  - IT
+  - Engineering
+  - Architecture
+  - Platform
+  - Security
+  - Data
+  # TODO: add or remove based on your actual taxonomy
+
+# Regex patterns for meeting titles to exclude.
+exclude_meeting_titles:
+  - "(?i)1:1"
+  - "(?i)standup"
+  - "(?i)retro(spective)?"  # only if you don't want them — remove to include
+  - "(?i)all hands"
+
+# Don't summarize meetings the architect led/attended (they already know).
+# Match on organizer email or attendee role.
+exclude_if_organizer:
+  # - ryan.anderson@prepass.com  # uncomment when ready
+
+# Maximum items per section in the final digest.
+max_decisions: 10
+max_unresolved: 10

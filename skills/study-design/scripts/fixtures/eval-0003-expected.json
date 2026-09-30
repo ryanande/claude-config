@@ -1,0 +1,44 @@
+{
+ "identities": [
+  "PrePass/arch-rover",
+  "PrePass/dx-aicentral",
+  "PrePass/dx-prepass-meta",
+  "PrePass/tpl-onyx",
+  "Wyatt-Rupp_prepass/claude-config",
+  "Wyatt-Rupp_prepass/debezium-account-sync",
+  "Wyatt-Rupp_prepass/debezium-poc",
+  "Wyatt-Rupp_prepass/debezium-snapshot-restore-experiment",
+  "Wyatt-Rupp_prepass/dx-arch-meta",
+  "Wyatt-Rupp_prepass/exocortex",
+  "Wyatt-Rupp_prepass/exocortex-data",
+  "Wyatt-Rupp_prepass/llm-reference",
+  "Wyatt-Rupp_prepass/nuget-mirror-rollout",
+  "Wyatt-Rupp_prepass/research-docs",
+  "harness-runtime"
+ ],
+ "unresolved": [
+  {
+   "identity": "Wyatt-Rupp_prepass/dx-aicentral",
+   "disposition": "pair-unresolved"
+  },
+  {
+   "identity": "dx-knowledge-mirror",
+   "disposition": "ambiguous-name"
+  },
+  {
+   "identity": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+   "disposition": "not-a-repository"
+  },
+  {
+   "identity": "https://prepass.atlassian.net/wiki/spaces/~71202025882951326f427d9916fda0c1e12f3f/pages/1017774085/Personal+Exocortex+Playbook",
+   "disposition": "not-a-repository"
+  },
+  {
+   "identity": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+   "disposition": "not-a-repository"
+  }
+ ],
+ "excluded_mentions": [
+  "@PrePass/architecture"
+ ]
+}

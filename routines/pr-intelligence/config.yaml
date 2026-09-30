@@ -1,0 +1,53 @@
+# PR Intelligence — scope and exclusions
+# The lens does the filtering; the scope is intentionally org-wide.
+
+org: PrePass
+
+# Org-wide scan. The "*" glob means "every repo in the org" — the runner
+# resolves this at request time via the GitHub MCP server.
+#
+# Use exclude_repos to opt out specific repos. Use the lens (architectural-lens.md)
+# to control PRIORITY, not membership.
+repos:
+  - "*"
+
+# Repos to explicitly exclude.
+exclude_repos:
+  # Internal tooling that produces a high volume of low-value PRs.
+  # - PrePass/some-tooling-repo
+  # Archived / read-only.
+  # - PrePass/some-archived-repo
+
+# Down-rank (still surface, but lower priority — see architectural-lens.md).
+# These globs map to the "down-rank" tier in the lens.
+down_rank_repos:
+  - "PrePass/aux-*"
+  - "PrePass/poc-*"
+  - "PrePass/Innovation/*"
+
+# Soft-exclude based on repo topics or naming. The runner / prompt should
+# de-prioritize these unless an architectural anti-pattern is present.
+soft_exclude_topics:
+  - experimental
+  - sandbox
+
+# Authors to exclude (bots, automation accounts).
+exclude_authors:
+  - dependabot[bot]
+  - renovate[bot]
+  - github-actions[bot]
+  - copilot-pull-request-reviewer[bot]
+
+# Time window in hours. Runner overrides to 72 on Mondays.
+window_hours: 24
+
+# PR states to include.
+include_states:
+  - open
+  - merged
+  - draft  # only if changes > draft_min_changes lines
+
+draft_min_changes: 100
+
+# Maximum items in the final digest (forces prioritization).
+max_items: 10

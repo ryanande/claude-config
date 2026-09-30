@@ -1,0 +1,41 @@
+name: Chat Surveillance
+
+# 08:15 America/Phoenix (MST, UTC−7; Arizona does not observe DST) → 15:15 UTC
+# Weekdays only.
+on:
+  schedule:
+    - cron: '15 15 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override date (YYYY-MM-DD) for backfill'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    name: Chat Surveillance digest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      # ─────────────────────────────────────────────────────────────
+      # TODO — wire this up before enabling the schedule.
+      #
+      # Same Microsoft Graph auth question as meeting-rundown.yml. Same two
+      # paths apply — local-only initially, or service-principal-with-Graph
+      # later. See that workflow for the secret list.
+      #
+      # Privacy note: the routine MUST NOT read 1:1 DMs. config.yaml has a
+      # `include_dms: false` guard; do not flip it.
+      # ─────────────────────────────────────────────────────────────
+
+      - name: Run digest (dry-run stub)
+        run: |
+          chmod +x routines/chat-surveillance/runner.sh
+          ./routines/chat-surveillance/runner.sh --dry-run > /tmp/composed.md
+          echo "Dry-run composed prompt — replace with real invocation when ready."
+          head -40 /tmp/composed.md

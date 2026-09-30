@@ -1,0 +1,48 @@
+name: Meeting Rundown
+
+# 08:00 America/Phoenix (MST, UTC−7; Arizona does not observe DST) → 15:00 UTC
+# Weekdays only.
+on:
+  schedule:
+    - cron: '0 15 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override date (YYYY-MM-DD) for backfill'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    name: Meeting Rundown digest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      # ─────────────────────────────────────────────────────────────
+      # TODO — wire this up before enabling the schedule.
+      #
+      # The meeting routine needs the Microsoft 365 / Teams MCP server with
+      # access to meeting transcripts. That auth flow is OAuth-on-behalf-of
+      # and is non-trivial in a headless CI environment. Two paths:
+      #
+      #   (a) Run this routine locally only (recommended initial state) and
+      #       remove this workflow file entirely, OR
+      #
+      #   (b) Use Microsoft Graph application permissions with a service
+      #       principal that has Teams transcript read scope. Add secrets:
+      #         - MS_GRAPH_TENANT_ID
+      #         - MS_GRAPH_CLIENT_ID
+      #         - MS_GRAPH_CLIENT_SECRET
+      #       and configure an MCP server / SDK call accordingly.
+      # ─────────────────────────────────────────────────────────────
+
+      - name: Run digest (dry-run stub)
+        run: |
+          chmod +x routines/meeting-rundown/runner.sh
+          ./routines/meeting-rundown/runner.sh --dry-run > /tmp/composed.md
+          echo "Dry-run composed prompt — replace with real invocation when ready."
+          head -40 /tmp/composed.md

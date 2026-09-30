@@ -1,0 +1,36 @@
+# Local secrets / env
+.env
+.env.*
+!.env.example
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Claude Code working state
+.claude/local/
+
+# Research-pipeline skill runtime state — the shared cross-skill fetch cache
+# (cached HTTP response bodies keyed by sha256 of normalized URL) and the
+# survey-refresh prior-session body snapshots. Pure runtime artifacts holding
+# third-party page content; see
+# skills/citation-detail-verify/references/cache-contract.md.
+# These resolve into this repo because ~/.claude/skills/* are symlinks here.
+skills/*/cache/
+skills/*/cache-snap/
+
+# Python bytecode from the vendored research-skill scripts
+__pycache__/
+*.pyc
+
+# Research-skill runtime state vendored from research-skills' own .gitignore:
+# the per-session candidates spool (candidates-contract v1.0 §Spool) and
+# study-run's clone root (evidence-scope.md §The clone root).
+skills/*/candidates/
+skills/*/clones/

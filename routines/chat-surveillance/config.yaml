@@ -1,0 +1,96 @@
+# Chat Surveillance — scope and exclusions
+# Edit this file to control which Teams channels the routine watches.
+
+# Teams channels and group chats to monitor.
+# Tier headers below are priority hints for the lens (the routine runs daily;
+# it can't enforce per-channel cadence, so it surfaces from all and the lens
+# prioritizes by tier). Names are the human-facing Teams names — see the
+# "fetch reality" note at the bottom of this file for how matching works.
+channels:
+  # --- Core Architecture (daily) ---
+  - "Friendly Neighborhood Architects"
+  - "Architecture Working Session"
+  - "Platform Architecture Overview"
+
+  # --- DevOps / Platform (daily / every other day) ---
+  - "Weekly DevOps Sync"
+  - "DevOps: Observability, Monitoring & Logging Strategies"
+
+  # --- Product / Domain (2-3x per week) ---
+  - "Enterprise Enrollment"
+  - "Enrollment Architecture: Workshop"
+  - "Enrollment Daily Scrum"
+
+  # --- Cross-Team / Leadership (weekly) ---
+  - "Weekly Engineering Leadership"
+
+  # --- Dev team channels (recommended) ---
+  - "Platform.FleetManagement - VehicleManagement feature chat"
+  - "Fleet Management MVP Cross Team Chat"
+
+  # --- Supporting / specialized dev threads (situational) ---
+  - "Unified Auth Chat"
+  - "Azure Fleet Management Setup"
+  - "Fleet Management CRM Integration"
+
+  # --- Tolling / FMP team ceremonies (situational) ---
+  # Captured chat IDs live in chat_ids: below (pins; see fetch reality).
+  - "FMP-UP Daily Scrum"                # 19:meeting_NDhhZTU3MDEtYzljNi00MmY5LTg2NjUtN2M3Zjg4N2EzNDZi@thread.v2
+  - "Tolling Customer - Sprint Review"  # 19:meeting_ZDlmMjU2ZjEtNzdkZC00MDU4LTliMGYtY2JkOTVjNjA2NWVk@thread.v2
+  - "Tolling Customer - Retrospective"  # 19:meeting_YmU3NWVlMGItMWZhMS00NzViLWFjNWEtNDRjZDhiZjQ1NTUw@thread.v2
+  - "Tolling Systems - Daily Stand Up"  # 19:meeting_OWRlZjYxYzItN2YwZC00NjMyLTkzMGItNzgyYjJhZGQ3MTJk@thread.v2
+  - "Tolls team sprint refinement"      # 19:meeting_NjEzYWFhMjMtNTU5ZS00ZWFhLTlmNWYtMzI1NTdhZmMzODg1@thread.v2
+
+# Opportunistic topics to sweep by keyword (cross-thread, no fixed channel).
+# These are NOT 1:1 DMs — the routine searches the lens vocabulary and keeps
+# only channel/group-chat hits. The person-named "in chat" threads from the
+# source list are intentionally omitted: they are 1:1 DMs (privacy guard).
+keyword_sweeps:
+  - "identity architecture"
+  - "observability noise debugging"
+  - "deployment friction"
+
+# Captured chat/channel GUIDs (precise pinning). The lens treats each as an exact
+# `chatId` pin — any search result whose chatId matches is always in-scope (see
+# the chat_ids: handling in prompt.md). Grab the `19:...@thread.v2` (group/meeting
+# chat) or `@thread.tacv2` (true channel) segment from a Teams chat link.
+chat_ids:
+  - "19:meeting_NDhhZTU3MDEtYzljNi00MmY5LTg2NjUtN2M3Zjg4N2EzNDZi@thread.v2"  # FMP-UP Daily Scrum
+  - "19:meeting_ZDlmMjU2ZjEtNzdkZC00MDU4LTliMGYtY2JkOTVjNjA2NWVk@thread.v2"  # Tolling Customer - Sprint Review
+  - "19:meeting_YmU3NWVlMGItMWZhMS00NzViLWFjNWEtNDRjZDhiZjQ1NTUw@thread.v2"  # Tolling Customer - Retrospective
+  - "19:meeting_OWRlZjYxYzItN2YwZC00NjMyLTkzMGItNzgyYjJhZGQ3MTJk@thread.v2"  # Tolling Systems - Daily Stand Up
+  - "19:meeting_NjEzYWFhMjMtNTU5ZS00ZWFhLTlmNWYtMzI1NTdhZmMzODg1@thread.v2"  # Tolls team sprint refinement
+
+# Channels to explicitly exclude (overrides channels: list).
+exclude_channels:
+  # - "#random"
+  # - "#general"
+
+# Senders to ignore (bots, integrations).
+exclude_senders:
+  - "GitHub"
+  - "Azure DevOps"
+  - "PagerDuty"
+  - "Datadog"
+
+# Maximum items per section in the final digest.
+max_hot_threads: 5
+max_knowledge_opportunities: 10
+max_direct_asks: 10
+
+# Privacy guard — never set this to true.
+include_dms: false
+
+# --- Fetch reality (read before debugging "why didn't channel X show up") ---
+# The M365 connector's chat_message_search has NO channel:/name: scope and its
+# results do NOT carry the channel/chat display name — only GUIDs. So the names
+# above can't be matched to results by string. In practice the daily run:
+#   1. Runs a date-windowed scan (covers group + meeting chats from the list).
+#   2. Runs keyword_sweeps + lens vocabulary; keeps only results with a
+#      `channelUri` (true channels) or group-chat `chatUri`, drops 1:1 DMs
+#      (chatId containing `unq.gbl.spaces` with a single counterpart).
+#   3. Lets the lens prioritize, biased by the tier the names are grouped under.
+# To pin a specific channel precisely, capture its GUID from a Teams chat link
+# (or a search hit's `chatId`) and add it to `chat_ids:` above. The lens keeps any
+# result whose `chatId` matches a pin, which is how named channels are guaranteed
+# to surface despite results carrying no display name.
